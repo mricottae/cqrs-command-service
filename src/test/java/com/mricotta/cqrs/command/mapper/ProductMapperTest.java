@@ -25,12 +25,13 @@ class ProductMapperTest {
         assertThat(product.getId()).isNull();
         assertThat(product.getCreatedAt()).isNull();
         assertThat(product.getUpdatedAt()).isNull();
+        assertThat(product.getVersion()).isNull();
     }
 
     @Test
     void toDto_mapsAllFields() {
         var now = Instant.now();
-        var product = new Product(1L, "Mouse", "Wireless mouse", new BigDecimal("19.99"), 10, now, now);
+        var product = new Product(1L, "Mouse", "Wireless mouse", new BigDecimal("19.99"), 10, now, now, 3L);
 
         var dto = mapper.toDto(product);
 
@@ -41,12 +42,13 @@ class ProductMapperTest {
         assertThat(dto.stock()).isEqualTo(10);
         assertThat(dto.createdAt()).isEqualTo(now);
         assertThat(dto.updatedAt()).isEqualTo(now);
+        assertThat(dto.version()).isEqualTo(3L);
     }
 
     @Test
     void updateEntity_overwritesMutableFieldsAndKeepsManagedOnes() {
         var createdAt = Instant.parse("2026-01-01T00:00:00Z");
-        var product = new Product(1L, "Old", "Old desc", BigDecimal.ONE, 1, createdAt, createdAt);
+        var product = new Product(1L, "Old", "Old desc", BigDecimal.ONE, 1, createdAt, createdAt, 2L);
         var request = new ProductRequest("Mouse", "Wireless mouse", new BigDecimal("19.99"), 10);
 
         mapper.updateEntity(request, product);
@@ -56,5 +58,6 @@ class ProductMapperTest {
                 .containsExactly("Mouse", "Wireless mouse", new BigDecimal("19.99"), 10);
         assertThat(product.getId()).isEqualTo(1L);
         assertThat(product.getCreatedAt()).isEqualTo(createdAt);
+        assertThat(product.getVersion()).isEqualTo(2L);
     }
 }

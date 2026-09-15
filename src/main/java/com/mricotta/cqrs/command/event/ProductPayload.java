@@ -1,15 +1,15 @@
-package com.mricotta.cqrs.command.dto;
+package com.mricotta.cqrs.command.event;
 
 import java.math.BigDecimal;
 import java.time.Instant;
 
-public record ProductResponse(
+/** Full product state carried by every product event. */
+public record ProductPayload(
         Long id,
         String name,
         String description,
         BigDecimal price,
         Integer stock,
         Instant createdAt,
-        Instant updatedAt,
-        Long version) {
+        Instant updatedAt) {
 }

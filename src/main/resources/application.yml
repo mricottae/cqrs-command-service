@@ -1,6 +1,9 @@
 spring:
   application:
     name: cqrs-command-service
+  threads:
+    virtual:
+      enabled: true
   datasource:
     url: jdbc:postgresql://localhost:5432/products_command
     username: postgres
@@ -9,6 +12,18 @@ spring:
     hibernate:
       ddl-auto: update
     open-in-view: false
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      acks: all
+      properties:
+        "[enable.idempotence]": true
+        # Fail fast when the broker is down so the relay doesn't hold outbox row locks for long.
+        "[max.block.ms]": 5000
+        "[request.timeout.ms]": 5000
+        "[delivery.timeout.ms]": 10000
 
 server:
   port: 8081
@@ -16,3 +31,12 @@ server:
 app:
   cors:
     allowed-origins: http://localhost:5173
+  kafka:
+    topics:
+      product-events: catalog.product.events
+  outbox:
+    poll-interval-ms: 1000
+    batch-size: 100
+    send-timeout: 10s
+    retention: 7d
+    cleanup-cron: "0 0 3 * * *"
