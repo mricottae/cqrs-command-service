@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: cqrs-command-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/products_command
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+
+server:
+  port: 8081
