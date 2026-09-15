@@ -10,7 +10,7 @@ Java 21 · Spring Boot · Spring Data JPA · PostgreSQL · MapStruct · Lombok
 docker compose up -d
 ./mvnw spring-boot:run
 ```
-Service listens on `http://localhost:8081`.
+Service listens on `http://localhost:8081`. CORS allows `POST`/`PUT` from `http://localhost:5173`, configurable via `app.cors.allowed-origins`.
 
 ## Endpoints
 | Method | Path                 | Description      | Success |
